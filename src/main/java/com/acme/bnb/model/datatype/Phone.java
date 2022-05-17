@@ -1,16 +1,24 @@
 package com.acme.bnb.model.datatype;
 
+import com.acme.bnb.controlers.clases.Validable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+import javax.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 
 @NoArgsConstructor
 @Data
 @Embeddable
-public class Phone implements Serializable {
+public class Phone implements Serializable, Validable {
 
     public static final Map<String, Country> COUNTRIES = new HashMap<String, Country>() {
         {
@@ -267,10 +275,25 @@ public class Phone implements Serializable {
         setCountry(country);
     }
     
+    @Pattern(regexp = "^[0-9]*$", message = "Invalid phone number")
+    @Column(length = 9)
     private String number;
     
+    @Column(length = 3)
     private String country;
 
+    @Transient
+    @JsonSerialize
+    @JsonDeserialize
     public String prefix;
 
+    public String getPrefix(){
+        return COUNTRIES.containsKey(country)? ("+"+COUNTRIES.get(country).getCode()) : null;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isValid() {
+        return !(StringUtils.isBlank(number) || StringUtils.isBlank(country) || number.length() != 9 || country.length() != 3);
+    }
 }
