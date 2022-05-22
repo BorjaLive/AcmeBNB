@@ -1,0 +1,50 @@
+.author{
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    padding: 5px;
+    background-color: lightyellow;
+    border-radius: 0.5rem;
+    border: 1px solid lightgrey;
+    transition: 0.2s;
+    margin-bottom: 10px;
+    gap: 10px;
+    cursor: pointer;
+    animation: 0.2s;
+}
+.author:hover{
+    transform: scale(1.05);
+}
+.author .center {
+    flex: 1;
+}
+.author .navigation-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.company {
+    color: gray;
+    font-size: 95%;
+}
+
+.date {
+    text-align: end;
+    font-size: 90%;
+    color: gray;
+}
+
+.attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+
+}
+
+.btn-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
