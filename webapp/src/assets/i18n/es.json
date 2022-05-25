@@ -114,7 +114,8 @@
       "EMPTYTYPE": "Por favor, seleccione un tipo de usuario",
       "PWDMISMATCH": "Las contraseñas no coinciden",
       "EMPTY": "Rellene todos los campos, por favor",
-      "REPEATPASSWORD": "Repita la contraseña"
+      "REPEATPASSWORD": "Repita la contraseña",
+      "USERTYPE": "Tipo de usuario"
     },
     "SWAL": {
       "PROCESING": "Espere un momento, por favor.",
@@ -139,7 +140,8 @@
     "IMAGES": "Imágenes",
     "ORDER": "Ordenar por popularidad",
     "EMPTY": "No hay propiedades",
-    "STADISTICS": "Estadísticas"
+    "STADISTICS": "Estadísticas",
+    "MAKE": "Registrar propiedad"
   },
   "REQUEST": {
     "ACCEPT": "Aceptar solicitud",
@@ -199,6 +201,9 @@
     "ATTRIBUTES": "Atributos de las propiedades",
     "SYSVARS": "Variables del sistema",
     "AUDITORS": "Lista de auditores",
+    "FEETENANT": "Tasa Inquilino",
+    "FEELESSOR": "Tasa Arrendador",
+    "BNBVAT": "VAT de la empresa",
     "DASHBOARD": {
       "GENERAL": "Resumen general",
       "LESSORS": "Resumen por lessors",

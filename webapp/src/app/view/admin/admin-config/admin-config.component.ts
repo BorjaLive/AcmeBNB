@@ -9,8 +9,6 @@ import { SysConfigService } from 'src/app/service/sys-config.service';
 })
 export class AdminConfigComponent {
 
-  CONFIG_NAME: any = {"feeTenant": "Tarifa a tenant", "feeLessor": "Tarifa lessor", "bnbVar": "VAT de la empresa"}
-
   sysConfigs: SysConfig[] = [];
   lastSysConfigs: any = {};
 

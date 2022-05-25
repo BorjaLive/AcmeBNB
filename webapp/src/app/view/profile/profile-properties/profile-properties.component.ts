@@ -25,7 +25,7 @@ export class ProfilePropertiesComponent {
 
   onCreateProperty() {
     this.dialog.open(CreatePropertyDialogComponent, {data: {}, width: "400px"})
-    .afterClosed().subscribe(property => {if(property) this.properties.unshift(property)});
+    .afterClosed().subscribe(property => {if(property) this.properties = [...this.properties, property]});
   }
 
 }

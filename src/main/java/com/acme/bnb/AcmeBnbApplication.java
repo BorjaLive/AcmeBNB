@@ -39,6 +39,7 @@ import com.acme.bnb.repositories.TenantRepository;
 import com.acme.bnb.services.B0vEBlobService;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -80,29 +81,23 @@ public class AcmeBnbApplication {
             @Value(value = "classpath:test.jpg") Resource testJpg
     ) {
         return args -> {
-            //System.out.println("Blob Service Test: "+blobService.storeBlob("data:image/jpg;base64,"+Base64.getEncoder().encodeToString(IOUtils.toByteArray(testJpg.getInputStream())), true, true));
-
+            boolean populateFull = false;
+            
             if (sysConfigRepo.count() == 0) {
                 sysConfigRepo.save(new SysConfig("feeTenant", "1.00"));
                 sysConfigRepo.save(new SysConfig("feeLessor", "1.00"));
                 sysConfigRepo.save(new SysConfig("bnbVat", "999999999"));
             }
-            if (actorRepo.count() == 0) {
-                //Atriobutos de propiedades
-                PropertyAttribute countryAttr = new PropertyAttribute("Country", true);
-                PropertyAttribute provinceAttr = new PropertyAttribute("Province", true);
-                PropertyAttribute stateAttr = new PropertyAttribute("State", true);
-                PropertyAttribute cityAttr = new PropertyAttribute("City", true);
-                PropertyAttribute capacityAttr = new PropertyAttribute("Capacity", true);
-                PropertyAttribute nbedsAttr = new PropertyAttribute("Number of beds", false);
-                propertyAttributeRepo.save(countryAttr);
-                propertyAttributeRepo.save(provinceAttr);
-                propertyAttributeRepo.save(stateAttr);
-                propertyAttributeRepo.save(cityAttr);
-                propertyAttributeRepo.save(capacityAttr);
-                propertyAttributeRepo.save(nbedsAttr);
-                
-                //Usuarios
+            
+            if(propertyAttributeRepo.count() == 0){
+                propertyAttributeRepo.save(new PropertyAttribute("Country", true));
+                propertyAttributeRepo.save(new PropertyAttribute("Province", true));
+                propertyAttributeRepo.save(new PropertyAttribute("State", true));
+                propertyAttributeRepo.save(new PropertyAttribute("City", true));
+                propertyAttributeRepo.save(new PropertyAttribute("Capacity", true));
+            }
+            
+            if(administratorRepo.count() == 0){
                 Administrator admin1 = new Administrator();
                 admin1.setEmail("admin@acme.com");
                 admin1.setName("Admin");
@@ -110,7 +105,19 @@ public class AcmeBnbApplication {
                 admin1.setPhone(new Phone("192168101", "ESP"));
                 admin1.setPwd(bCryptPasswordEncoder.encode("1234"));
                 administratorRepo.save(admin1);
-
+            }
+            
+            if (propertyRepo.count() == 0 && populateFull) {
+                //Atriobutos de propiedades
+                PropertyAttribute countryAttr = propertyAttributeRepo.findByName("Country").get();
+                PropertyAttribute provinceAttr = propertyAttributeRepo.findByName("Province").get();
+                PropertyAttribute stateAttr = propertyAttributeRepo.findByName("State").get();
+                PropertyAttribute cityAttr = propertyAttributeRepo.findByName("City").get();
+                PropertyAttribute capacityAttr = propertyAttributeRepo.findByName("Capacity").get();
+                PropertyAttribute nbedsAttr = new PropertyAttribute("Number of beds", false);
+                propertyAttributeRepo.save(nbedsAttr);
+                
+                //Usuarios
                 Commentable comm1 = new Commentable();
                 commentableRepo.save(comm1);
                 Lessor lessor1 = new Lessor();
@@ -212,6 +219,7 @@ public class AcmeBnbApplication {
                 ));
                 property2.setRate(20D);
                 propertyRepo.save(property2);
+                property2.getAttributes().forEach(a -> propertyAttributeValueRepo.save(a));
                 
                 propertyPictureRepo.save(new PropertyPicture("https://blobcontainer.b0ve.com/deliver.php?q=1e46e9e0919acd10ced978494ac2d7698086de8f1870fdda90f260f6edee4fb5", property2));
                 propertyPictureRepo.save(new PropertyPicture("https://blobcontainer.b0ve.com/deliver.php?q=76125ff32c958e5030c8200d8dbe001c641a28d1b6eca438014a8e5ef562b465", property2));
@@ -230,6 +238,7 @@ public class AcmeBnbApplication {
                 ));
                 property3.setRate(5.5D);
                 propertyRepo.save(property3);
+                property3.getAttributes().forEach(a -> propertyAttributeValueRepo.save(a));
 
                 //Solicitudes
                 Request request1 = new Request();
@@ -262,7 +271,7 @@ public class AcmeBnbApplication {
                 
                 //Comentarios
                 Comment comment = new Comment();
-                comment.setAuthor(admin1);
+                comment.setAuthor(tenant1);
                 comment.setTarget(lessor1.getCommentable());
                 comment.setStars(3);
                 comment.setTitle("Buen tipo");
@@ -279,12 +288,12 @@ public class AcmeBnbApplication {
 
                 auditAttachmentRepo.save(new AuditAttachment("https://blobcontainer.b0ve.com/deliver.php?q=1417c794091cb6fe7c595926992fa2f195dacd7259d87b5fd2437edaf80d5a0f", audit1));
                 auditAttachmentRepo.save(new AuditAttachment("https://blobcontainer.b0ve.com/deliver.php?q=0a6598eb3134067b00205d9ab94788d49cbe9e7fb73e8f8edb250590018cfa2b", audit1));
-
-                
-                System.out.println("Printing Actors: ");
-                StreamSupport.stream(actorRepo.findAll().spliterator(), false).map(Actor::getName).forEach(System.out::println);
-                System.out.println("-------------------------");
             }
+            
+            System.out.println("--------------------------------------------------");
+            System.out.println("Startup Finished");
+            System.out.println("Printing Actors: "+StreamSupport.stream(actorRepo.findAll().spliterator(), false).map(Actor::getName).collect(Collectors.joining(", ")));
+            System.out.println("--------------------------------------------------");
         };
     }
 

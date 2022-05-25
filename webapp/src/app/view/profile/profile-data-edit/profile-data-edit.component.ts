@@ -10,6 +10,8 @@ import { ActorService } from 'src/app/service/actor.service';
 import { PopUpService } from 'src/app/service/helpers/pop-up.service';
 import { TranslateService } from '@ngx-translate/core';
 import Swal from "sweetalert2";
+import { Phone } from 'src/app/model/datatype/phone';
+import { Country } from 'src/app/model/datatype/country';
 
 @Component({
   selector: 'profile-data-edit',
@@ -21,8 +23,9 @@ export class ProfileDataEditComponent {
   private _actor: Actor = new Actor;
   get actor(): Actor {return this._actor; }
   @Input() set actor(val: Actor) {
+    if(!val.phone) val.phone = new Phone;
     this._actor = val;
-    this.prefix = this.prefixes.find(p => p.value.iso3 === this.actor.phone.country)??this.prefixes[0];
+    this.prefix = this.prefixes.find(p => p.value.iso3 === this.actor.phone?.country)??null;
   };
   newPicture: string | null = null;
   @Input() set socials(val: SocialIdentity[]){
@@ -30,12 +33,12 @@ export class ProfileDataEditComponent {
   }
   updatedSocials: UpdateableSocialIdentity[] = [];
 
-  prefixes: SearchItem[] = [];
-  private _prefix!: SearchItem;
-  get prefix(): SearchItem {return this._prefix}
-  set prefix(val: SearchItem) {
+  prefixes: SearchItem<Country>[] = [];
+  private _prefix: SearchItem<Country> | null = null;
+  get prefix(): SearchItem<Country> | null {return this._prefix}
+  set prefix(val: SearchItem<Country> | null) {
     this._prefix = val;
-    this.actor.phone.country = val.value.iso3;
+    if(this.actor.phone && val) this.actor.phone.country = val.value.iso3;
   }
 
   constructor(
@@ -45,13 +48,12 @@ export class ProfileDataEditComponent {
     private readonly actorService: ActorService,
     private readonly socialIdentityService: SocialIdentityService
   ) {
-    this.prefixes = COUNTRIES.map(c => ({text: `${c.name} +${c.code}`, value: c, keys: [c.name, `+${c.code}`]} as SearchItem));
+    this.prefixes = COUNTRIES.map(c => ({text: `${c.name} +${c.code}`, value: c, keys: [c.name, `+${c.code}`]} as SearchItem<Country>));
   }
 
   onChangePic(){
     FileSelectService.SelectPic()
     .then(pic => {
-      console.log(pic);
       this.newPicture = pic as string;
     })
     .catch(_ => {});
@@ -113,8 +115,11 @@ export class ProfileDataEditComponent {
   }
 
   onSave(){
-    if(this.newPicture !== null) this.actor.picture = this.newPicture;
+    this.popUpService.ShowLoading();
+    this.actor.picture = this.newPicture;
+    if(!(this.actor.phone?.number || this.actor.phone?.country)) this.actor.phone = null;
     this.actorService.update(this.actor.id, this.actor).then(_ => {
+      this.popUpService.DisableLoading();
       this.onExit();
     });
   }

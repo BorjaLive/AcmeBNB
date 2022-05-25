@@ -8,7 +8,7 @@
         <mat-icon>navigate_next</mat-icon>
     </div>
 </div>
-<p>{{audit.text}}</p>
+<p [innerHtml]="audit.text"></p>
 <div class="attachments">
     <icon-button icon="file_download" (click)="onDownloadAttachment(attachment)" *ngFor="let attachment of audit.attachments; let i = index">
         <span text>Adjunto {{i+1}}</span>

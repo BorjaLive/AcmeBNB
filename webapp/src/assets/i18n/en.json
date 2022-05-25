@@ -114,7 +114,8 @@
         "EMPTYTYPE": "Please, select a user type",
         "PWDMISMATCH": "Passwords do not match",
         "EMPTY": "Please, fill in all the required fields",
-        "REPEATPASSWORD": "Repeat password"
+        "REPEATPASSWORD": "Repeat password",
+        "USERTYPE": "User type"
       },
       "SWAL": {
         "PROCESING": "Processing...",
@@ -139,7 +140,8 @@
       "IMAGES": "Images",
       "ORDER": "Order by popularity",
       "EMPTY": "No properties found",
-      "STADISTICS": "Statistics"
+      "STADISTICS": "Statistics",
+      "MAKE": "Register property"
     },
     "REQUEST": {
       "ACCEPT": "Accept request",
@@ -199,6 +201,9 @@
       "ATTRIBUTES": "Property attributes",
       "SYSVARS": "System variables",
       "AUDITORS": "List of auditors",
+      "FEETENANT": "Tenant fee",
+      "FEELESSOR": "Lessor fee",
+      "BNBVAT": "Company VAT",
       "DASHBOARD": {
         "GENERAL": "General summary",
         "LESSORS": "Summary per lessor",

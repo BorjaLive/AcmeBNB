@@ -20,7 +20,6 @@ export class CommonsService {
     let lang = localStorage["lang"]??"en";
     this.translator.setDefaultLang(lang);
     this.translator.use(lang);
-    console.log(lang);
   }
 
   changeLang(lang: "en" | "es"){
@@ -64,7 +63,7 @@ export class CommonsService {
   }
 
   getBase64ImageFromUrl(imageUrl: string): Promise<SafeUrl> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.http.get(imageUrl, { responseType: "blob" }).subscribe(blob => {
         this.blobToBase64(blob).then(base64 => {
           resolve(base64)

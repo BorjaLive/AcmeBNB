@@ -24,6 +24,7 @@ export class AuditDialogComponent {
     private readonly commonsService: CommonsService
   ) {
     this.audit = data.audit;
+    this.audit.text = this.audit.text.replace(/\n/g, "<br />");
     this.mine = data.audit.author.id === this.accessService.getUserId();
   }
 

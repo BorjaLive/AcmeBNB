@@ -21,7 +21,7 @@
             <input matInput [(ngModel)]="actor.surname">
         </mat-form-field>
     </div>
-    <div class="input-row">
+    <div class="input-row" *ngIf="actor.phone">
         <search-selector [(item)]="prefix" [items]="prefixes" label="{{'SHARED.PREFIX' | translate}}" emptyText="{{'SHARED.NOPREFIX' | translate}}"></search-selector>
         <mat-form-field appearance="outline">
             <mat-label>{{'SHARED.PHONE' | translate}}</mat-label>

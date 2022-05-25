@@ -2,31 +2,31 @@
 <div class="input-row">
     <mat-form-field appearance="outline" class="field">
         <mat-label>{{'SHARED.NAME' | translate}}*</mat-label>
-        <textarea matInput [(ngModel)]="auditor.name"></textarea>
+        <input matInput [(ngModel)]="auditor.name"/>
     </mat-form-field>
 </div>
 <div class="input-row">
     <mat-form-field appearance="outline" class="field">
         <mat-label>{{'SHARED.SURNAME' | translate}}*</mat-label>
-        <textarea matInput [(ngModel)]="auditor.surname"></textarea>
+        <input matInput [(ngModel)]="auditor.surname"/>
     </mat-form-field>
 </div>
 <div class="input-row">
     <mat-form-field appearance="outline" class="field">
         <mat-label>{{'SHARED.EMAIL' | translate}}*</mat-label>
-        <textarea matInput [(ngModel)]="auditor.email"></textarea>
+        <input matInput [(ngModel)]="auditor.email"/>
     </mat-form-field>
 </div>
 <div class="input-row">
     <mat-form-field appearance="outline" class="field">
-        <mat-label>{{'SHARED.COMPANY' | translate}}*</mat-label>
-        <textarea matInput [(ngModel)]="auditor.company"></textarea>
+        <mat-label>{{'ADMIN.AUDITOR.COMPANY' | translate}}*</mat-label>
+        <input matInput [(ngModel)]="auditor.company"/>
     </mat-form-field>
 </div>
 <div class="input-row">
     <mat-form-field appearance="outline" class="field">
         <mat-label>{{'SHARED.PASSWORD' | translate}}*</mat-label>
-        <textarea matInput [(ngModel)]="auditor.pwd"></textarea>
+        <input matInput type="password" [(ngModel)]="auditor.pwd"/>
     </mat-form-field>
 </div>
 <div class="btn-div">

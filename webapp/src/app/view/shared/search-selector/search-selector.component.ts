@@ -11,28 +11,28 @@ import { CommonsService } from 'src/app/service/helpers/commons.service';
 })
 export class SearchSelectorComponent implements OnInit, OnDestroy {
 
-  private _item!: SearchItem;
+  private _item: SearchItem<any> | null = null;
 
-  get item(): SearchItem { return this._item; }
+  get item(): SearchItem<any> | null { return this._item; }
   @Input()
-  set item(val: SearchItem) {
+  set item(val: SearchItem<any> | null) {
     this.itemGroup.get("itemCtrl")?.setValue(val);
     this._item = val;
   }
-  @Output() itemChange = new EventEmitter<SearchItem>();
+  @Output() itemChange = new EventEmitter<SearchItem<any>>();
 
-  private _items: SearchItem[] = [];
+  private _items: SearchItem<any>[] = [];
 
-  get items(): SearchItem[] { return this._items; }
+  get items(): SearchItem<any>[] { return this._items; }
   @Input()
-  set items(val: SearchItem[]) {
+  set items(val: SearchItem<any>[]) {
     this._items = val;
     this.filteredItems.next(this.items.slice());
   }
 
   @ViewChild("itemSelect", { static: true }) itemSelect!: MatSelect;
   itemGroup: FormGroup;
-  filteredItems = new ReplaySubject<SearchItem[]>(1);
+  filteredItems = new ReplaySubject<SearchItem<any>[]>(1);
   protected _onDestroy = new Subject<void>();
 
   @Input() label: string = "Elementos";
@@ -89,8 +89,8 @@ export class SearchSelectorComponent implements OnInit, OnDestroy {
 
 }
 
-export interface SearchItem {
-  value: any,
+export interface SearchItem<T> {
+  value: T,
   text: string,
   keys: string[]
 }

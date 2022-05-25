@@ -6,7 +6,7 @@ export class Actor {
     name: string = "";
     surname: string = "";
     email: string = "";
-    phone: Phone = new Phone;
+    phone: Phone | null = null;
     picture: string | null = null;
     stars: number = 0;
     type: UserType | null = null;

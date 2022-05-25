@@ -7,10 +7,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PropertyAttributeRepository extends CrudRepository<PropertyAttribute, Long>{
+public interface PropertyAttributeRepository extends CrudRepository<PropertyAttribute, Long> {
 
-    public Optional<PropertyAttribute> findByName(String country);
+    public Optional<PropertyAttribute> findByName(String name);
 
     public List<PropertyAttribute> findBySysDefaultTrue();
-    
+
 }

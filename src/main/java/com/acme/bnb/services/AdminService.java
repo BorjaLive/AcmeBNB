@@ -82,7 +82,7 @@ public class AdminService {
         
         dashboard.setPropertiesWithMoreAudits(getTop3properties(em.createQuery("SELECT p, SIZE(p.audits)*1.0 FROM Property p ORDER BY SIZE(p.audits) DESC", Tuple.class)));
         dashboard.setPropertiesWithLessAudits(getTop3properties(em.createQuery("SELECT p, SIZE(p.audits)*1.0 FROM Property p ORDER BY SIZE(p.audits) ASC", Tuple.class)));
-        dashboard.setAvgAuditsPerProperty(em.createQuery("SELECT CAST(AVG(SIZE(p.audits)) as double) FROM Property p", Double.class).getSingleResult());
+        dashboard.setAvgAuditsPerProperty(em.createQuery("SELECT CAST(COALESCE(AVG(SIZE(p.audits)), 0) as double) FROM Property p", Double.class).getSingleResult());
         
         dashboard.setActorWithMoreSocialIdentities(getTop3actors(em.createQuery("SELECT a, SIZE(a.socialIdentities)*1.0 FROM Actor a ORDER BY SIZE(a.socialIdentities) DESC", Tuple.class)));
         dashboard.setActorWithLessSocialIdentities(getTop3actors(em.createQuery("SELECT a, SIZE(a.socialIdentities)*1.0 FROM Actor a ORDER BY SIZE(a.socialIdentities) ASC", Tuple.class)));
@@ -91,12 +91,12 @@ public class AdminService {
         dashboard.setTenantWithMoreInvoices(getTop3actors(em.createQuery("SELECT t, COUNT(r)*1.0 FROM Tenant t LEFT JOIN t.requests r ON r.tenant = t AND r.invoice IS NOT EMPTY GROUP BY t ORDER BY COUNT(r) DESC", Tuple.class)));
         dashboard.setTenantWithLessInvoices(getTop3actors(em.createQuery("SELECT t, COUNT(r)*1.0 FROM Tenant t LEFT JOIN t.requests r ON r.tenant = t AND r.invoice IS NOT EMPTY GROUP BY t ORDER BY COUNT(r) ASC", Tuple.class)));
         Long numberOfInvoices = (Long) em.createQuery("SELECT COUNT(i) FROM Invoice i").getSingleResult();
-        dashboard.setAvgInvoicesPerTenant(numberOfInvoices/(double)numberOfTenants);
+        if(numberOfTenants != 0) dashboard.setAvgInvoicesPerTenant(numberOfInvoices/(double)numberOfTenants);
         
         dashboard.setTotalMoneyDueToSystem(em.createQuery("SELECT CAST(COALESCE(SUM(i.ammount), 0) as double) FROM Invoice i", Double.class).getSingleResult());
         
-        dashboard.setAvgRequestsPerPropertyWithAudits(em.createQuery("SELECT SUM(SIZE(p.requests))/(COUNT(p)*1.0) FROM Property p WHERE p.audits IS NOT EMPTY", Double.class).getSingleResult());
-        dashboard.setAvgRequestsPerPropertyWithoutAudits(em.createQuery("SELECT SUM(SIZE(p.requests))/(COUNT(p)*1.0) FROM Property p WHERE p.audits IS EMPTY", Double.class).getSingleResult());
+        dashboard.setAvgRequestsPerPropertyWithAudits(em.createQuery("SELECT COALESCE(SUM(SIZE(p.requests))/(COUNT(p)*1.0), 0) FROM Property p WHERE p.audits IS NOT EMPTY", Double.class).getSingleResult());
+        dashboard.setAvgRequestsPerPropertyWithoutAudits(em.createQuery("SELECT COALESCE(SUM(SIZE(p.requests))/(COUNT(p)*1.0), 0) FROM Property p WHERE p.audits IS EMPTY", Double.class).getSingleResult());
         
         return dashboard;
     }
