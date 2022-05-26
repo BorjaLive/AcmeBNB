@@ -3,7 +3,7 @@
 <div><b>{{'SHARED.CREDITCARD' | translate}}:</b> {{invoice.creditCard.number}}</div>
 <div><b>{{'INVOICE.VAT' | translate}}:</b> {{invoice.vat}}</div>
 <div><b>{{'INVOICE.CREATIONDATE' | translate}}:</b> {{invoice.date | date:'HH:mm dd/MM/yyyy'}}</div>
-<div><b>{{'INVOICE.COST' | translate}}:</b> {{request.ndays}} x {{request.rate | money:'rate'}} = {{request.ndays*request.rate}}</div>
+<div><b>{{'INVOICE.COST' | translate}}:</b> {{request.ndays}} x {{request.rate | money}}/{{'SHARED.DAY' | translate}} = {{(request.ndays*request.rate) | money}}</div>
 <div><b>{{'INVOICE.LESSORFEE' | translate}}:</b> {{request.lessorFee}}</div>
 <div><b>{{'INVOICE.TENANTFEE' | translate}}:</b> {{request.tenantFee}}</div>
 <div class="btn-div">

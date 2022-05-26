@@ -22,7 +22,7 @@
             <div class="details box-wrapper">
                 <div class="title">
                     <span>{{property.name}}</span>
-                    <span>{{property.rate|money:'rate'}}</span>
+                    <span>{{property.rate | money}}/{{'SHARED.DAY' | translate}}</span>
                 </div>
                 <div class="location">
                     <mat-icon>place</mat-icon>{{property.address}}, {{province}}, {{city}}, {{state}}, {{country}}

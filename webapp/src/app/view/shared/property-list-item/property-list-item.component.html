@@ -3,7 +3,7 @@
     <img-loading src="assets/placeholder.png" *ngIf="property.pictures.length === 0"></img-loading>
     <div class="card-content">
         <div class="title">{{property.name}}</div>
-        <div class="rate">{{property.rate | money:'rate'}}</div>
+        <div class="rate">{{property.rate | money}}/{{'SHARED.DAY' | translate}}</div>
         <div class="place">{{property.address}}</div>
         <div class="description">{{property.description | charLimit:100}}</div>
         <div class="stats-row">
