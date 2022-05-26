@@ -25,7 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { HomeComponent } from './view/home/home.component';
 import { DefaultErrorHandler } from './service/helpers/default-error-handler';
@@ -154,7 +154,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     { provide: ErrorHandler, useClass: DefaultErrorHandler },
-    {provide: MAT_DATE_LOCALE, useValue: "es-ES"},
+    { provide: MAT_DATE_LOCALE, useValue: "es-ES" },
     MatMomentDateModule
   ],
   bootstrap: [AppComponent]

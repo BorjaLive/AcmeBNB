@@ -3,6 +3,7 @@ import { Lessor } from 'src/app/model/lessor';
 import { DashboardData } from 'src/app/service/class/dashboard-data';
 import { DashboardLessorData } from 'src/app/service/class/dashboard-lessor-data';
 import { DashboardService } from 'src/app/service/dashboard.service';
+import { PopUpService } from 'src/app/service/helpers/pop-up.service';
 import { LessorService } from 'src/app/service/lessor.service';
 
 @Component({
@@ -21,11 +22,20 @@ export class AdminDashboardComponent {
   testQLerror: any = null;
 
   constructor(
+    private readonly popUpService: PopUpService,
     private readonly lessorService: LessorService,
     private readonly dashboardService: DashboardService
   ) {
-    this.lessorService.list().then(lessors => this.lessors = lessors);
-    this.dashboardService.get().then(data => this.data = data);
+    this.popUpService.ShowLoading();
+    Promise.all([
+      this.lessorService.list(),
+      this.dashboardService.get()
+    ]).then(results => {
+      this.popUpService.DisableLoading();
+      this.lessors = results[0];
+      this.data = results[1];
+    });
+    
   }
 
   onLessorChange(){
